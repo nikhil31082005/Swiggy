@@ -1,11 +1,14 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function RestaurantCard({ restArr }) {
   // console.log("rest", restArr);
   return (
+    // `/retaurants/${restDetails.info.id}`
     <div className="flex flex-wrap justify-center gap-6 p-6 bg-gray-100 min-h-screen">
       {restArr.map((restDetails) => (
-        <div
+        <Link to={`/restaurants/${restDetails.info.id}`}>
+          <div
           key={restDetails.info.id}
           className="w-72 bg-white rounded-2xl shadow-md overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-lg"
         >
@@ -34,6 +37,7 @@ function RestaurantCard({ restArr }) {
             </p>
           </div>
         </div>
+        </Link>
       ))}
     </div>
   );

@@ -7,11 +7,15 @@ import Offers from "./components/Offers.jsx";
 import Help from "./components/Help.jsx";
 import Signin from "./components/Signin.jsx";
 import Body from "./components/Body.jsx";
+import Error from "./components/Error.jsx";
+import RestaurantDetails from "./components/RestaurantDetails.jsx";
+import Clock from "./components/Clock.jsx";
 
 const appRoutes = createBrowserRouter([
   {
     path: '/',
     element: <App />,
+    errorElement: <Error/>,
     children: [
       {
         path: '/',
@@ -28,6 +32,14 @@ const appRoutes = createBrowserRouter([
       {
         path: '/signin',
         element: <Signin />
+      },
+      {
+        path: '/clock',
+        element: <Clock />
+      },
+      {
+        path: '/restaurants/:id',
+        element: <RestaurantDetails />
       },
     ]
   },
