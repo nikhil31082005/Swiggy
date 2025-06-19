@@ -1,46 +1,21 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { addItem } from '../utils/cartSlice';
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { removeItem } from '../utils/cartSlice';
 
-function RestaurantDetails() {
-    const { id } = useParams();
-    const API = `https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=27.49870&lng=77.66690&restaurantId=${id}&catalog_qa=undefined&submitAction=ENTER`;
-
-    const [restInfoDetails, setRestInfoDetails] = useState([]);
-
-    useEffect(() => {
-        async function fetchRestaurantDetails() {
-            try {
-                const response = await axios.get(API);
-                const items = response.data.data.cards[5]?.groupedCard?.cardGroupMap?.REGULAR?.cards[2]?.card?.card?.itemCards || [];
-                setRestInfoDetails(items);
-            } catch (error) {
-                console.error("Error fetching restaurant details:", error);
-            }
-        }
-
-        fetchRestaurantDetails();
-    }, [id]);
-
+function Cart() {
+    const cartItems = useSelector((store) => store.cart.items);
 
     const dispatch = useDispatch();
-    function handleAddItem(foodItem){
-        dispatch(addItem(foodItem));
+    function handleDeleteItem(foodItem){
+        dispatch(removeItem(foodItem));
     }
-
-    return (
-        <div className="max-w-6xl mx-auto px-4 py-10">
-            <h1 className="text-4xl font-extrabold text-center mb-10 text-green-700">
-                Menu for Restaurant ID: <span className="text-black">{id}</span>
-            </h1>
-
-            {restInfoDetails.length === 0 ? (
+  return (
+    <div className="max-w-6xl mx-auto px-4 py-10">
+        {cartItems.length === 0 ? (
                 <p className="text-center text-gray-500 text-lg">No items found.</p>
             ) : (
                 <div className="grid gap-6 md:grid-cols-2">
-                    {restInfoDetails.map((foodItem, index) => {
+                    {cartItems.map((foodItem, index) => {
                         const { name, defaultPrice, price, category, imageId } = foodItem.card.info;
                         const displayPrice = (defaultPrice || price || 0) / 100;
 
@@ -68,13 +43,16 @@ function RestaurantDetails() {
                                 <button onClick={() => handleAddItem(foodItem)} className="bg-green-500 text-white font-semibold px-5 py-2 rounded-lg mt-4 sm:mt-0 sm:ml-6 hover:bg-green-600 transition-all duration-300">
                                     Add +
                                 </button>
+                                <button onClick={() => handleDeleteItem(foodItem)} className="bg-red-500 text-white font-semibold px-5 py-2 rounded-lg mt-4 sm:mt-0 sm:ml-6 hover:bg-green-600 transition-all duration-300">
+                                    Remove -
+                                </button>
                             </div>
                         );
                     })}
                 </div>
             )}
-        </div>
-    );
+    </div>
+  )
 }
 
-export default RestaurantDetails;
+export default Cart

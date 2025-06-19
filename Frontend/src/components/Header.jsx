@@ -4,6 +4,7 @@ import { IoSearch, IoHelpBuoyOutline } from "react-icons/io5";
 import { BiSolidOffer } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
 import { FaShoppingCart } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 function Header() {
   const navItems = [
@@ -11,8 +12,10 @@ function Header() {
     { icon: <BiSolidOffer />, label: "Offers", path: "/offer" },
     { icon: <IoHelpBuoyOutline />, label: "Help", path: "/help" },
     { icon: <CgProfile />, label: "Sign In", path: "/signin" },
-    { icon: <FaShoppingCart />, label: "Cart", path: "/cart" },
+    // { icon: <FaShoppingCart />, label: "Cart", path: "/cart" },
   ];
+
+  const cartItems = useSelector((store) => store.cart.items);
 
   return (
     <header className="bg-gray-900 text-white shadow-md px-8 sm:px-16 py-4 flex items-center justify-between">
@@ -54,6 +57,17 @@ function Header() {
             </NavLink>
           </li>
         ))}
+        <li>
+            <NavLink
+              to="/cart" 
+              className="flex items-center gap-2 hover:text-orange-400 transition-colors"
+              activeClassName="text-orange-400"
+            >
+              <span className="text-lg"><FaShoppingCart /></span>
+              <span>Cart {cartItems.length}</span>
+
+            </NavLink>
+          </li>
       </ul>
     </header>
   );
